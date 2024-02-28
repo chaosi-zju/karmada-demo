@@ -1,0 +1,241 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+    field.cattle.io/publicEndpoints: '[{"addresses":["10.200.78.158","10.200.78.159"],"port":80,"protocol":"HTTP","serviceName":"gw-pre:hwork-backend-gateway-config","ingressName":"gw-pre:hwork-backend-gateway-config-d5876e21","hostname":"5138.hwork-backend-gateway-config.gw-pre.huangdao-test-n.haier.net","path":"/","allNodes":false},{"addresses":["10.200.78.158","10.200.78.159"],"port":80,"protocol":"HTTP","serviceName":"gw-pre:hwork-backend-gateway-config","ingressName":"gw-pre:hwork-backend-gateway-config-d5876e21","hostname":"5138.hwork-backend-gateway-config.gw-pre.859679566930.openplat.net","path":"/","allNodes":false}]'
+    k8s.haier.net/description: ""
+    k8s.haier.net/display-name: python-code-executor
+    k8s.haier.net/updated-timestamp: "2024-01-31T05:58:55Z"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"k8s.haier.net/display-name":"python-code-executor"},"labels":{"app":"python-code-executor","app.kubernetes.io/name":"python-code-executor","app.kubernetes.io/version":"v0","k8s.haier.net/dslVersion":"v1alpha","k8s.haier.net/tenant":"hdscoms"},"name":"python-code-executor","namespace":"gzc-multi"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"python-code-executor"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"python-code-executor","app.kubernetes.io/name":"python-code-executor","app.kubernetes.io/version":"v0","k8s.haier.net/tenant":"hdscoms"}},"spec":{"containers":[{"image":"nginx","imagePullPolicy":"Always","name":"c0","resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"securityContext":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","securityContext":{"runAsNonRoot":false},"terminationGracePeriodSeconds":30}}}}
+    propagationpolicy.karmada.io/name: python-code-executor-deployment
+    propagationpolicy.karmada.io/namespace: gzc-multi
+    resourcebinding.karmada.io/name: python-code-executor-deployment
+    resourcebinding.karmada.io/namespace: gzc-multi
+    resourcetemplate.karmada.io/managed-annotations: k8s.haier.net/display-name,kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace
+    resourcetemplate.karmada.io/uid: 3379f7cf-08c2-48f6-9868-d12c9bc0f90f
+    work.karmada.io/conflict-resolution: overwrite
+    work.karmada.io/name: python-code-executor-645f58878b
+    work.karmada.io/namespace: karmada-es-member2
+  creationTimestamp: "2024-02-21T08:36:33Z"
+  generation: 2
+  labels:
+    app: python-code-executor
+    app.kubernetes.io/name: python-code-executor
+    app.kubernetes.io/version: v0
+    k8s.haier.net/app-type: ""
+    k8s.haier.net/dslVersion: v1alpha
+    k8s.haier.net/tenant: hdscoms
+    karmada.io/managed: "true"
+    propagationpolicy.karmada.io/name: python-code-executor-deployment
+    propagationpolicy.karmada.io/namespace: gzc-multi
+    propagationpolicy.karmada.io/permanent-id: 242ceb15-ec65-4f55-bf10-fda2b0c55ee5
+    resourcebinding.karmada.io/key: 85fb74f6d4
+    resourcebinding.karmada.io/permanent-id: c432d283-9ec8-4382-8771-2c9c81b6a86a
+    velero.io/backup-name: velero-qd-huangdao-test-20231129133059
+    velero.io/restore-name: velero-qd-huangdao-test-20231129133059-20231129142127
+    work.karmada.io/name: python-code-executor-645f58878b
+    work.karmada.io/namespace: karmada-es-member2
+    work.karmada.io/permanent-id: cff4f029-df2a-43c4-a633-d54e8260411d
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:field.cattle.io/publicEndpoints: {}
+          f:k8s.haier.net/description: {}
+          f:k8s.haier.net/display-name: {}
+          f:k8s.haier.net/updated-timestamp: {}
+        f:labels:
+          .: {}
+          f:app: {}
+          f:app.kubernetes.io/name: {}
+          f:app.kubernetes.io/version: {}
+          f:k8s.haier.net/app-type: {}
+          f:k8s.haier.net/tenant: {}
+          f:velero.io/backup-name: {}
+          f:velero.io/restore-name: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:replicas: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:k8s.haier.net/timestamp: {}
+            f:labels:
+              .: {}
+              f:app: {}
+              f:app.kubernetes.io/name: {}
+              f:app.kubernetes.io/version: {}
+              f:k8s.haier.net/app-type: {}
+          f:spec:
+            f:containers:
+              k:{"name":"c0"}:
+                .: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:resources:
+                  .: {}
+                  f:limits:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+                  f:requests:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+                f:securityContext:
+                  .: {}
+                  f:privileged: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+            f:dnsPolicy: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:terminationGracePeriodSeconds: {}
+    manager: kubectl
+    operation: Update
+    time: "2024-02-21T08:36:33Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:propagationpolicy.karmada.io/name: {}
+          f:propagationpolicy.karmada.io/namespace: {}
+          f:resourcebinding.karmada.io/name: {}
+          f:resourcebinding.karmada.io/namespace: {}
+          f:resourcetemplate.karmada.io/managed-annotations: {}
+          f:resourcetemplate.karmada.io/uid: {}
+          f:work.karmada.io/conflict-resolution: {}
+          f:work.karmada.io/name: {}
+          f:work.karmada.io/namespace: {}
+        f:labels:
+          f:k8s.haier.net/dslVersion: {}
+          f:karmada.io/managed: {}
+          f:propagationpolicy.karmada.io/name: {}
+          f:propagationpolicy.karmada.io/namespace: {}
+          f:propagationpolicy.karmada.io/permanent-id: {}
+          f:resourcebinding.karmada.io/key: {}
+          f:resourcebinding.karmada.io/permanent-id: {}
+          f:work.karmada.io/name: {}
+          f:work.karmada.io/namespace: {}
+          f:work.karmada.io/permanent-id: {}
+    manager: karmada-controller-manager
+    operation: Update
+    time: "2024-02-21T08:36:40Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:availableReplicas: {}
+        f:conditions:
+          .: {}
+          k:{"type":"Available"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:updatedReplicas: {}
+    manager: kube-controller-manager
+    operation: Update
+    subresource: status
+    time: "2024-02-21T08:36:42Z"
+  name: python-code-executor
+  namespace: gzc-multi
+  resourceVersion: "1797857"
+  uid: 9b5bc892-daa2-4518-8d5c-5b2150567a38
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: python-code-executor
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        k8s.haier.net/timestamp: "1702312332135229849"
+      creationTimestamp: null
+      labels:
+        app: python-code-executor
+        app.kubernetes.io/name: python-code-executor
+        app.kubernetes.io/version: v0
+        k8s.haier.net/app-type: ""
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: IfNotPresent
+        name: c0
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2024-02-21T08:36:36Z"
+    lastUpdateTime: "2024-02-21T08:36:36Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2024-02-21T08:36:33Z"
+    lastUpdateTime: "2024-02-21T08:36:42Z"
+    message: ReplicaSet "python-code-executor-5dbd499bf5" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

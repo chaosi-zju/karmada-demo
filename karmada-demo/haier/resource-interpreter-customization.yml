@@ -1,0 +1,25 @@
+apiVersion: config.karmada.io/v1alpha1
+kind: ResourceInterpreterCustomization
+metadata:
+  name: member-cluster-deploy
+spec:
+  customizations:
+    retention:
+      luaScript: |
+        function Retain(desiredObj, observedObj)
+          local observedAnnotations = observedObj.spec.template.metadata.annotations
+          if observedAnnotations ~= nil and observedAnnotations["k8s.haier.net/timestamp"] ~= nil then
+            if desiredObj.spec.template.metadata.annotations == nil then
+              desiredObj.spec.template.metadata.annotations = {}
+            end
+            desiredObj.spec.template.metadata.annotations["k8s.haier.net/timestamp"] = observedAnnotations["k8s.haier.net/timestamp"]
+          end
+          if observedObj.metadata.annotations ~= nil and observedObj.metadata.annotations["karmada.haier.net/retain-replicas"] == "true" then
+            desiredObj.spec.replicas = observedObj.spec.replicas
+          end
+          print("[DEBUG] desiredObj ", desiredObj)
+          return desiredObj
+        end
+  target:
+    apiVersion: apps/v1
+    kind: Deployment

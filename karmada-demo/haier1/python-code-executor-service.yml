@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: python-code-executor
+    app.kubernetes.io/name: python-code-executor
+    app.kubernetes.io/version: v0
+    k8s.haier.net/tenant: hdscoms
+  name: python-code-executor
+  namespace: gzc-multi
+spec:
+  ports:
+  - name: tcp-8080
+    port: 8080
+  selector:
+    app: python-code-executor

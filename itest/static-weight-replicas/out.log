@@ -1,0 +1,104 @@
+
+---------case 1----------
+
+
+[{"name":"member2","replicas":2},{"name":"member1","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-dwdkb   0/1     ContainerCreating   0          1s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-4h695   0/1     ContainerCreating   0          3s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-db9vz   0/1     ContainerCreating   0          3s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-74d2q   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-mvvqx   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-7m74b   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-7l6z2   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-qfvwn   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-vkjfv   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-82qdg   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-gb4x5   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-gztrq   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-2qzt5   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-d4tdl   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-fkxsv   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member2","replicas":2},{"name":"member1","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-g4jzd   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-pp728   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-wzw6x   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member2","replicas":2},{"name":"member1","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-gb82l   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-77z7k   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-zp2kv   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-4vgbz   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-shkwv   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-qm6x8   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member1","replicas":2},{"name":"member2","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-4b9hj   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-7m8m9   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-6vn54   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+
+[{"name":"member2","replicas":2},{"name":"member1","replicas":1}]NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-nmc2j   0/1     ContainerCreating   0          2s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-qf5wn   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-s79dp   0/1     ContainerCreating   0          2s    <none>   member2-control-plane   <none>           <none>
+
+
+---
+
+

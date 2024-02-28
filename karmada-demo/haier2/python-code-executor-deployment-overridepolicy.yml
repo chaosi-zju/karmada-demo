@@ -1,0 +1,64 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: OverridePolicy
+metadata:
+  creationTimestamp: null
+  name: python-code-executor-deployment
+  namespace: gzc-multi
+spec:
+  overrideRules:
+  - overriders:
+      plaintext:
+      - operator: add
+        path: /spec/revisionHistoryLimit
+        value: 10
+      - operator: add
+        path: /spec/progressDeadlineSeconds
+        value: 600
+      - operator: add
+        path: /spec/template/metadata/labels/k8s.haier.net~1app-type
+        value: ""
+      - operator: remove
+        path: /spec/template/metadata/labels/k8s.haier.net~1tenant
+        value: null
+      - operator: add
+        path: /spec/template/metadata/annotations
+        value:
+          k8s.haier.net/timestamp: "1702312332135229849"
+      - operator: remove
+        path: /spec/template/spec/securityContext/runAsNonRoot
+        value: null
+      - operator: add
+        path: /spec/template/spec/affinity
+        value: {}
+      - operator: add
+        path: /spec/template/spec/schedulerName
+        value: default-scheduler
+      - operator: add
+        path: /spec/template/spec/containers/0/lifecycle
+        value: {}
+      - operator: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+      - operator: remove
+        path: /spec/template/spec/containers/0/securityContext/privileged
+        value: null
+    targetCluster:
+      clusterNames:
+      - member2
+  - overriders:
+      plaintext:
+      - operator: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 200m
+      - operator: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 64Mi
+    targetCluster:
+      clusterNames:
+      - member1
+  overriders: {}
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: python-code-executor
+    namespace: gzc-multi

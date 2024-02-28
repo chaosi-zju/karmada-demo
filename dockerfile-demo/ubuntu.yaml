@@ -1,0 +1,28 @@
+# kubectl run ubuntu --image=ubuntu:1.0 --command -- /bin/sh -c 'sleep 99999'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu
+  namespace: karmada-system
+spec:
+  containers:
+    - name: ubuntu
+      image: ubuntu:1.0
+      args:
+        - -c
+        - sleep 99999
+      command:
+        - /bin/sh
+      volumeMounts:
+        - mountPath: /opt/host
+          name: data
+        - mountPath: /etc/karmada/pki
+          name: karmada-certs
+  volumes:
+    - name: data
+      hostPath:
+        path: /opt/host
+        type: DirectoryOrCreate
+    - name: karmada-certs
+      secret:
+        secretName: karmada-cert-secret

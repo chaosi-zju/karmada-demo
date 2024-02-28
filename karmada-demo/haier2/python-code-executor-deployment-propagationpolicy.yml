@@ -1,0 +1,27 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  creationTimestamp: null
+  name: python-code-executor-deployment
+  namespace: gzc-multi
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: python-code-executor
+    uid: 1a0690fa-f644-4fc3-bfaa-5d4ea3b632c7
+spec:
+  conflictResolution: Overwrite
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - qd-aliyun-dmz-ack-test
+      - qd-hongdao-test
+    replicaScheduling:
+      replicaSchedulingType: Duplicated
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: python-code-executor
+    namespace: gzc-multi

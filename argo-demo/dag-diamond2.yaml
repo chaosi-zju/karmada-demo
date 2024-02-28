@@ -1,0 +1,48 @@
+# The following workflow executes a diamond workflow
+# 
+#   A
+#  / \
+# B   C
+#  \ /
+#   D
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: dag-diamond-
+spec:
+  entrypoint: diamond
+  templates:
+  - name: diamond
+    dag:
+      tasks:
+      - name: A
+        template: echo
+        arguments:
+          parameters: [{name: cluster, value: member1}, {name: message, value: A}]
+      - name: B
+        depends: "A"
+        template: echo
+        arguments:
+          parameters: [{name: cluster, value: member2}, {name: message, value: B}]
+      - name: C
+        depends: "A"
+        template: echo
+        arguments:
+          parameters: [{name: cluster, value: member2}, {name: message, value: C}]
+      - name: D
+        depends: "B && C"
+        template: echo
+        arguments:
+          parameters: [{name: cluster, value: member3}, {name: message, value: D}]
+
+  - name: echo
+    metadata:
+      labels:
+        argo-workflow-cluster: "{{inputs.parameters.cluster}}"
+    inputs:
+      parameters:
+      - name: cluster
+      - name: message
+    container:
+      image: alpine:3.7
+      command: [echo, "{{inputs.parameters.message}}"]

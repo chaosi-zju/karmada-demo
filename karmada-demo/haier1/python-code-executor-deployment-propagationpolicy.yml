@@ -1,0 +1,20 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  creationTimestamp: null
+  name: python-code-executor-deployment
+  namespace: gzc-multi
+spec:
+  conflictResolution: Overwrite
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - member1
+      - member2
+    replicaScheduling:
+      replicaSchedulingType: Duplicated
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: python-code-executor
+    namespace: gzc-multi

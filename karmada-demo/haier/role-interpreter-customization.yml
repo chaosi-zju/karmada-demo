@@ -1,0 +1,15 @@
+apiVersion: config.karmada.io/v1alpha1
+kind: ResourceInterpreterCustomization
+metadata:
+  name: member-cluster-role
+spec:
+  customizations:
+    retention:
+      luaScript: |
+        function Retain(desiredObj, observedObj)
+          print("[DEBUG] desiredObj ", desiredObj)
+          return desiredObj
+        end
+  target:
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role

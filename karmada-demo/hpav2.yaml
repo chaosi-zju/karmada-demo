@@ -1,0 +1,38 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: test-hpa
+  namespace: default
+spec:
+  behavior:
+    scaleUp:
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 4
+          periodSeconds: 15
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: d1
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: hpa-pp
+spec:
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+  resourceSelectors:
+    - apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      name: test-hpa
+      namespace: default

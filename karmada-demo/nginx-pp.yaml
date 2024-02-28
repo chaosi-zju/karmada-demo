@@ -1,0 +1,14 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: deployments-pp
+spec:
+  conflictResolution: Overwrite
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - member1
+  priority: 0
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment

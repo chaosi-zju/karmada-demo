@@ -1,0 +1,91 @@
+
+---------case 8----------
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]] map[applied:true clusterName:member2 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]] map[applied:true clusterName:member3 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]] map[applied:true clusterName:member4 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]]]
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-27twx   0/1     ContainerCreating   0          5s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-cb74c   0/1     ContainerCreating   0          6s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-cjrsp   0/1     ContainerCreating   0          6s    <none>   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-6m9hm   0/1     ContainerCreating   0          6s    <none>   member3-control-plane   <none>           <none>
+nginx-655d65d4cf-ttscc   0/1     ContainerCreating   0          6s    <none>   member3-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-b4bp7   0/1     ContainerCreating   0          5s    <none>   member4-control-plane   <none>           <none>
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Unhealthy status:map[availableReplicas:1 readyReplicas:1 replicas:2 unavailableReplicas:1 updatedReplicas:2]] map[applied:true clusterName:member2 health:Healthy status:map[availableReplicas:2 readyReplicas:2 replicas:2 updatedReplicas:2]] map[applied:true clusterName:member3 health:Healthy status:map[availableReplicas:1 readyReplicas:1 replicas:1 updatedReplicas:1]]]
+NAME                     READY   STATUS              RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-27twx   1/1     Running             0          10s   10.10.0.139   member1-control-plane   <none>           <none>
+nginx-655d65d4cf-v2xzd   0/1     ContainerCreating   0          4s    <none>        member1-control-plane   <none>           <none>
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-cb74c   1/1     Running   0          11s   10.12.0.71   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-cjrsp   1/1     Running   0          11s   10.12.0.70   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-ttscc   1/1     Running   0          11s   10.244.0.69   member3-control-plane   <none>           <none>
+
+
+---
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]] map[applied:true clusterName:member2 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]] map[applied:true clusterName:member3 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]] map[applied:true clusterName:member4 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]]]
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-rkqxl   0/1     ContainerCreating   0          5s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-lbxg8   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-nk999   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-rtgfn   0/1     ContainerCreating   0          5s    <none>   member3-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-8tm5z   0/1     ContainerCreating   0          5s    <none>   member4-control-plane   <none>           <none>
+nginx-655d65d4cf-nkdkh   0/1     ContainerCreating   0          5s    <none>   member4-control-plane   <none>           <none>
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Unhealthy status:map[availableReplicas:1 readyReplicas:1 replicas:2 unavailableReplicas:1 updatedReplicas:2]] map[applied:true clusterName:member2 health:Healthy status:map[availableReplicas:1 readyReplicas:1 replicas:1 updatedReplicas:1]] map[applied:true clusterName:member3 health:Unhealthy status:map[availableReplicas:1 readyReplicas:1 replicas:2 unavailableReplicas:1 updatedReplicas:2]]]
+NAME                     READY   STATUS              RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-fmcbn   0/1     ContainerCreating   0          5s    <none>        member1-control-plane   <none>           <none>
+nginx-655d65d4cf-rkqxl   1/1     Running             0          11s   10.10.0.141   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-nk999   1/1     Running   0          11s   10.12.0.73   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-rtgfn   1/1     Running             0          11s   10.244.0.71   member3-control-plane   <none>           <none>
+nginx-655d65d4cf-wwtn4   0/1     ContainerCreating   0          5s    <none>        member3-control-plane   <none>           <none>
+
+
+---
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]] map[applied:true clusterName:member2 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]] map[applied:true clusterName:member3 health:Unhealthy status:map[replicas:2 unavailableReplicas:2 updatedReplicas:2]] map[applied:true clusterName:member4 health:Unhealthy status:map[replicas:1 unavailableReplicas:1 updatedReplicas:1]]]
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-m7kg6   0/1     ContainerCreating   0          5s    <none>   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-2k92g   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-4mwpn   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-4bngp   0/1     ContainerCreating   0          5s    <none>   member3-control-plane   <none>           <none>
+nginx-655d65d4cf-rsrgv   0/1     ContainerCreating   0          5s    <none>   member3-control-plane   <none>           <none>
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-wxms5   0/1     ContainerCreating   0          5s    <none>   member4-control-plane   <none>           <none>
+
+
+aggregatedStatus
+[map[applied:true clusterName:member1 health:Healthy status:map[availableReplicas:1 readyReplicas:1 replicas:1 updatedReplicas:1]] map[applied:true clusterName:member2 health:Healthy status:map[availableReplicas:2 readyReplicas:2 replicas:2 updatedReplicas:2]] map[applied:true clusterName:member3 health:Healthy status:map[availableReplicas:2 readyReplicas:2 replicas:2 updatedReplicas:2]]]
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-m7kg6   1/1     Running   0          11s   10.10.0.143   member1-control-plane   <none>           <none>
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-2k92g   1/1     Running   0          11s   10.12.0.74   member2-control-plane   <none>           <none>
+nginx-655d65d4cf-4mwpn   1/1     Running   0          11s   10.12.0.75   member2-control-plane   <none>           <none>
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-4bngp   1/1     Running   0          11s   10.244.0.73   member3-control-plane   <none>           <none>
+nginx-655d65d4cf-rsrgv   1/1     Running   0          11s   10.244.0.74   member3-control-plane   <none>           <none>
+
+
+---
+
+

@@ -1,0 +1,33 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: inject-pod-by-labels
+spec:
+  experiments:
+    - scope: pod
+      target: pod
+      action: IO
+      desc: "Pod IO Exception by labels"
+      matchers:
+        - name: labels
+          value:
+            - "app=karmada-controller-manager"
+        - name: namespace
+          value:
+            - "karmada-system"
+        - name: method
+          value:
+            - "read"
+            - "write"
+        - name: delay
+          value:
+            - "3000"
+        - name: path
+          value:
+            - ""
+        - name: percent
+          value:
+            - "100"
+        - name: errno
+          value:
+            - "28"

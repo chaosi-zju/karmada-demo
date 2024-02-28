@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "example-issuer"
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - backend:
+          serviceName: example-service
+          servicePort: http
+        path: /                 
+  tls:
+  - secretName: example-tls-cert
+    hosts:
+      - example.com
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ingress-pp
+spec:
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+  resourceSelectors:
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      name: test-ingress
+      namespace: default

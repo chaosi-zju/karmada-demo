@@ -1,0 +1,16 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: pp-delay-preem
+spec:
+  activationPreference: Lazy
+  priority: 2
+  preemption: Always
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member2

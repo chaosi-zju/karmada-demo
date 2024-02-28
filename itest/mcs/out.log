@@ -1,0 +1,32 @@
+
+---------2 deploy变更/升级Deployment，增加或减少部署Pod实例数----------
+
+
+
+NAME                  CLUSTER   ADDRESSTYPE   PORTS     ENDPOINTS                          AGE     ADOPTION
+kubernetes            member1   IPv4          6443      172.18.0.2                         46m     N
+nginx-qtbp6           member1   IPv4          8080      10.10.0.25,10.10.0.26,10.10.0.28   3m18s   Y
+kubernetes            member2   IPv4          6443      172.18.0.5                         46m     N
+member1-nginx-qtbp6   member2   IPv4          8080      10.10.0.25,10.10.0.26,10.10.0.28   3m17s   Y
+nginx-p59lp           member2   IPv4          <unset>   <unset>                            3m18s   Y
+kubernetes            member3   IPv4          6443      172.18.0.3                         46m     N
+
+
+NAME                  CLUSTER   ADDRESSTYPE   PORTS     ENDPOINTS               AGE     ADOPTION
+kubernetes            member1   IPv4          6443      172.18.0.2              46m     N
+nginx-qtbp6           member1   IPv4          8080      10.10.0.25,10.10.0.26   3m23s   Y
+kubernetes            member2   IPv4          6443      172.18.0.5              46m     N
+member1-nginx-qtbp6   member2   IPv4          8080      10.10.0.25,10.10.0.26   3m22s   Y
+nginx-p59lp           member2   IPv4          <unset>   <unset>                 3m23s   Y
+kubernetes            member3   IPv4          6443      172.18.0.3              46m     N
+
+
+NAME                  CLUSTER   ADDRESSTYPE   PORTS     ENDPOINTS                                      AGE     ADOPTION
+kubernetes            member1   IPv4          6443      172.18.0.2                                     46m     N
+nginx-qtbp6           member1   IPv4          8080      10.10.0.25,10.10.0.26,10.10.0.30 + 1 more...   3m27s   Y
+kubernetes            member2   IPv4          6443      172.18.0.5                                     46m     N
+member1-nginx-qtbp6   member2   IPv4          8080      10.10.0.25,10.10.0.26,10.10.0.30 + 1 more...   3m26s   Y
+nginx-p59lp           member2   IPv4          <unset>   <unset>                                        3m27s   Y
+kubernetes            member3   IPv4          6443      172.18.0.3                                     46m     N
+
+

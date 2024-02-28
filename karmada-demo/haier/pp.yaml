@@ -1,0 +1,22 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: pp
+spec:
+  conflictResolution: Overwrite
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      name: demo
+  placement:
+    clusterAffinity:
+      axx: []
+      bxx: []
+      cxx: []
+      dxx: []
+      exx: []
+      clusterNames:
+        - member1

@@ -1,0 +1,12 @@
+apiVersion: search.karmada.io/v1alpha1
+kind: ResourceRegistry
+metadata:
+  name: deployment-search
+spec:
+  targetCluster:
+    clusterNames:
+      - member1
+      - member2
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment

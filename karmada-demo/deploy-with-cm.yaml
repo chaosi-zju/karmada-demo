@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+  labels:
+    app: my-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - image: nginx
+          name: my-nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: configmap
+              mountPath: "/configmap"
+      volumes:
+        - name: configmap
+          configMap:
+            name: my-nginx-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-nginx-config
+  labels:
+    app: my-nginx
+data:
+  nginx.properties: |
+    proxy-connect-timeout: "10s"
+    proxy-read-timeout: "10s"
+    client-max-body-size: "2m"
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: my-nginx-propagation
+spec:
+  propagateDeps: true
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: my-nginx
+    - apiVersion: v1
+      kind: ConfigMap
+      name: my-nginx-config
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - member1
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member2
+            weight: 1

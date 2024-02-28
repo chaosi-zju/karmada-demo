@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: service-pp
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: my-service
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

@@ -1,0 +1,513 @@
+
+---------1.1 先创建延时生效的policy，再创建工作负载，立即分发生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           4s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=6bace1d3-7849-43f1-b712-8833be75307c
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-wxx2s   0/1     ContainerCreating   0          4s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------1.2 先创建工作负载，再创建立即生效的policy，创建后工作负载立即分发生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           5s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=3a32f19c-cf59-4b1f-a68e-ea39c59d94d8
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-gnvbp   0/1     ContainerCreating   0          4s    <none>   member2-control-plane   <none>           <none>
+
+
+---------1.3 先创建工作负载，再创建延时生效的policy不会立即生效，待工作负载变更时生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           5s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=c9434c7a-3fc9-4c80-bfea-a16e578fee10
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-xwkph   0/1     ContainerCreating   0          4s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------资源变更
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           8s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=c9434c7a-3fc9-4c80-bfea-a16e578fee10,refresh-time=1706173204
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-xwkph   0/1     ContainerCreating   0          7s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------2.1 全局配置为立即生效，cpp配置也为立即生效，修改cpp后配置立即生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=efb3856a-37cb-4b96-8ee5-298fb1f4d15c
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-qq56s   0/1     ContainerCreating   0          3s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改cpp配置，立即生效
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           7s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=efb3856a-37cb-4b96-8ee5-298fb1f4d15c
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-nqqmt   0/1     ContainerCreating   0          3s    <none>   member2-control-plane   <none>           <none>
+
+
+---------2.2 全局配置为立即生效，cpp配置为延时生效，修改cpp后，在修改deploy/service配置时分别生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp-delay,clusterpropagationpolicy.karmada.io/permanent-id=3e11d771-57cc-4c73-a645-28ea71cb6076
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-b8rqd   0/1     ContainerCreating   0          3s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改cpp-delay配置(不变)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           6s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp-delay,clusterpropagationpolicy.karmada.io/permanent-id=3e11d771-57cc-4c73-a645-28ea71cb6076
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-b8rqd   1/1     Running   0          7s    10.10.0.37   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------资源变更(生效)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           10s   nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp-delay,clusterpropagationpolicy.karmada.io/permanent-id=3e11d771-57cc-4c73-a645-28ea71cb6076,refresh-time=1706173225
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-6hdf4   0/1     ContainerCreating   0          3s    <none>   member2-control-plane   <none>           <none>
+
+
+---------2.3 修改pp中的生效模式，由延时生效改为立即生效成功----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=9d82d257-0298-40b9-9866-4bbbe5282335
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-g6sqb   0/1     ContainerCreating   0          3s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改pp，延时->立即(生效)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           7s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=9d82d257-0298-40b9-9866-4bbbe5282335
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-g6sqb   1/1     Running   0          7s    10.10.0.38   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------2.4 修改cpp中的生效模式，由立即生效改为延时生效----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=62a1af0f-0be8-4398-9803-c5a070bf723c
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-zt27r   0/1     ContainerCreating   0          3s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改cpp，立即->延时(不变)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           6s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=62a1af0f-0be8-4398-9803-c5a070bf723c
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-zt27r   1/1     Running   0          7s    10.10.0.39   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------资源变更(生效)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           10s   nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=62a1af0f-0be8-4398-9803-c5a070bf723c,refresh-time=1706173246
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-zt27r   1/1     Running   0          10s   10.10.0.39   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------2.5 删除policy中的生效模式配置，修改后该策略和全局配置一致----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=a2ec8ca2-6c1c-458d-b656-0f9dbe6be48d
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-jhbds   0/1     ContainerCreating   0          7s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改pp并删除activationPreference字段(立即生效)
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           17s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=a2ec8ca2-6c1c-458d-b656-0f9dbe6be48d
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-6lrkq   1/1     Running   0          7s    10.12.0.22   member2-control-plane   <none>           <none>
+
+
+---------3.1 延迟生效的pp，修改后资源无法匹配任何policy,分发实例保持现状 ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=cfc0f8ae-896a-4b75-8e25-2be29bdacf8e
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-s9hfq   0/1     ContainerCreating   0          6s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------修改pp
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           9s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/permanent-id=cfc0f8ae-896a-4b75-8e25-2be29bdacf8e
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-s9hfq   1/1     Running   0          12s   10.10.0.41   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------3.2 延迟生效的cpp删除后，资源无法匹配到任何policy，分发实例保持现状 ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           4s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp-delay,clusterpropagationpolicy.karmada.io/permanent-id=ee84c3e6-9f53-4d4d-98e1-bfbcd1dc47f9
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-89gg4   0/1     ContainerCreating   0          4s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------删除cpp
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           9s    nginx        nginx    app=nginx   <none>
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-89gg4   1/1     Running   0          10s   10.10.0.42   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------3.3 立即生效的cpp,修改cpp后资源无法匹配任何policy,分发实例保持现状 ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           4s    nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/name=cpp,clusterpropagationpolicy.karmada.io/permanent-id=375f9e44-2f9d-48d8-ad5b-121c92170d61
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-pt7cn   0/1     ContainerCreating   0          4s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改cpp
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           13s   nginx        nginx    app=nginx   clusterpropagationpolicy.karmada.io/permanent-id=375f9e44-2f9d-48d8-ad5b-121c92170d61
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-pt7cn   1/1     Running   0          15s   10.10.0.43   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+---------3.4 资源匹配pp1时，修改pp1后资源匹配到了立即生效的pp2，资源按照pp2的策略立即进行调整（member1变member2） ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=e4745977-9287-4405-8929-72b7086297a5
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-6q7tl   0/1     ContainerCreating   0          5s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改pp-delay，匹配 pp
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           10s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=01352060-02fc-4661-9e93-6a2f5fccc772
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-r4vp9   0/1     ContainerCreating   0          4s    <none>   member2-control-plane   <none>           <none>
+
+
+---------3.5 资源匹配pp1时，修改pp1后资源匹配到延时生效的pp2，在资源进行变更后匹配pp2进行调整（member1变member2） ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           7s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=97a7f447-4ee2-40ca-b0a4-ba737f196b00
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-h2lht   1/1     Running   0          9s    10.10.0.45   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------修改pp-delay,匹配pp-delay2（不变）
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           14s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay2,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=9a74bcb7-2326-4b12-a6c4-22057a5e684f
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-h2lht   1/1     Running   0          16s   10.10.0.45   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------资源变更
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           21s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay2,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=9a74bcb7-2326-4b12-a6c4-22057a5e684f,refresh-time=1706173361
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-wk7dz   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+
+
+---------3.6 资源匹配pp1时，创建pp2为立即生效，抢占模式，则资源立刻匹配pp2生效 ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=8c4e8680-d93c-4afa-a760-9fc70fd44956
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-jdgsp   1/1     Running   0          9s    10.10.0.46   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------创建立即生效，抢占模式的pp2
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           13s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-preem,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=1a168f8a-97f0-4c05-8114-a4a0934b07cc
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-zbc26   0/1     ContainerCreating   0          5s    <none>   member2-control-plane   <none>           <none>
+
+
+---------3.7 资源匹配pp1时，创建pp2为延时生效，抢占模式，则资源在变更时生效pp2的策略 ----------
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           3s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=5f8e0cce-5b9a-4fa7-98d2-9c44c6ece86a
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-qt9k6   0/1     ContainerCreating   0          4s    <none>   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------创建延时生效，抢占模式的pp2
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   1/1     1            1           8s    nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay-preem,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=8247ac09-3071-4c21-9d0e-36f508bc2fc6
+
+
+[map[name:member1 replicas:1]]
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-qt9k6   1/1     Running   0          11s   10.10.0.47   member1-control-plane   <none>           <none>
+
+
+No resources found in default namespace.
+
+
+----------资源变更
+
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR    LABELS
+nginx   0/1     1            0           20s   nginx        nginx    app=nginx   propagationpolicy.karmada.io/name=pp-delay-preem,propagationpolicy.karmada.io/namespace=default,propagationpolicy.karmada.io/permanent-id=8247ac09-3071-4c21-9d0e-36f508bc2fc6,refresh-time=1706173405
+
+
+[map[name:member2 replicas:1]]
+
+No resources found in default namespace.
+
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+nginx-655d65d4cf-t266m   1/1     Running   0          9s    10.12.0.26   member2-control-plane   <none>           <none>
+
+

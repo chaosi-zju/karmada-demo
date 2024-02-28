@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    k8s.haier.net/display-name: python-code-executor
+  labels:
+    app: python-code-executor
+    app.kubernetes.io/name: python-code-executor
+    app.kubernetes.io/version: v0
+    k8s.haier.net/dslVersion: v1alpha
+    k8s.haier.net/tenant: hdscoms
+  name: python-code-executor
+  namespace: gzc-multi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-code-executor
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: python-code-executor
+        app.kubernetes.io/name: python-code-executor
+        app.kubernetes.io/version: v0
+        k8s.haier.net/tenant: hdscoms
+    spec:
+      containers:
+      - image: reg-qd-huangdao.haier.net/hdscoms_gitlab/python-code-executor:v0.0.3-b-master-9b5030adaaf36579b2330fad440367338cff3c39
+        imagePullPolicy: Always
+        name: c0
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext:
+        runAsNonRoot: false
+      terminationGracePeriodSeconds: 30

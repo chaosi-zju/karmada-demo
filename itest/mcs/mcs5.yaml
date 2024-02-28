@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: hello-app
+          image: gcr.io/google-samples/hello-app:1.0
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+    - port: 81
+      targetPort: 8080
+  selector:
+    app: nginx
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: mci-workload
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member4
+---
+apiVersion: networking.karmada.io/v1alpha1
+kind: MultiClusterService
+metadata:
+  name: nginx
+spec:
+  types:
+    - CrossCluster
+  consumerClusters:
+    - name: member1
+    - name: member2
+  providerClusters:
+    - name: member4

@@ -1,0 +1,50 @@
+#            CPU    GPU
+# master     4      0
+# worker1    4      3
+# worker2    4      3
+#
+# grade0    0~1     0-1
+# grade1    1~2     1~2
+# grade2   2~max   2~max
+#
+# grade0    0~3     0-1
+# grade1    3~4     1~2
+# grade2   4~max   2~max
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-plugin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: device-plugin
+  template:
+    metadata:
+      labels:
+        app: device-plugin
+    spec:
+      containers:
+        - name: device-plugin
+          image: busybox
+          command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
+          resources:
+            limits:
+              cpu: 2500m
+              memory: 100Mi
+              karmada.io/gpu: "3"
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: device-plugin-pp
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: device-plugin
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1

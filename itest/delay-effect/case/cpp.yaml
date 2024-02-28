@@ -1,0 +1,36 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: demo-cpp
+spec:
+  activationPreference: Lazy
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment
+  priority: 0
+  conflictResolution: Overwrite
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - member1
+      - member2
+    replicaScheduling:
+      replicaSchedulingType: Divided
+      replicaDivisionPreference: Weighted
+      weightPreference:
+        staticWeightList:
+        - targetCluster: # 目标集群
+            clusterNames:
+             - member1
+          weight: 3
+        - targetCluster: # 目标集群
+            clusterNames:
+             - member2
+          weight: 1
+    clusterTolerations:
+    - key: cluster.karmada.io/not-ready
+      operator: Exists
+      effect: NoExecute
+    - key: cluster.karmada.io/unreachable
+      operator: Exists
+      effect: NoExecute

@@ -1,0 +1,41 @@
+#helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+#  --set storageClass.name=nfs-sc-default \
+#  --set nfs.server=192.168.3.142 \
+#  --set nfs.path=/data/backups \
+#  --set storageClass.defaultClass=true
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-pvc
+  namespace: karmada-system
+spec:
+  storageClassName: nfs-sc-default
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-pod
+  namespace: karmada-system
+spec:
+  containers:
+    - name: test-pod
+      image: busybox:latest
+      command:
+        - "/bin/sh"
+      args:
+        - "-c"
+        - "touch /mnt/SUCCESS && exit 0 || exit 1"
+      volumeMounts:
+        - name: nfs-pvc
+          mountPath: "/mnt"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: test-pvc

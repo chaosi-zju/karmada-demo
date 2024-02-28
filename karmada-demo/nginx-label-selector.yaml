@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: ""
+  labels:
+    app: nginx
+    region: cn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          resources:
+            limits:
+              cpu: 25m
+              memory: 64Mi
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: nginx-pp
+spec:
+  priority: 2
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      labelSelector:
+        matchLabels:
+          app: nginx
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: nginx-pp2
+spec:
+  priority: 1
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member2
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      labelSelector:
+        matchLabels:
+          region: cn

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-plugin
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: device-plugin
+  template:
+    metadata:
+      labels:
+        app: device-plugin
+    spec:
+      containers:
+        - name: device-plugin
+          image: busybox
+          command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+              karmada.io/gpu: "1"
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: device-plugin-pp
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: device-plugin
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        dynamicWeight: AvailableReplicas

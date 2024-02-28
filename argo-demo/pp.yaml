@@ -1,0 +1,47 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: argo-pod-pp1
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Pod
+      labelSelector:
+        matchLabels:
+          argo-workflow-cluster: member1
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: argo-pod-pp2
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Pod
+      labelSelector:
+        matchLabels:
+          argo-workflow-cluster: member2
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member2
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: argo-pod-pp3
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Pod
+      labelSelector:
+        matchLabels:
+          argo-workflow-cluster: member3
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member3

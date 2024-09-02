@@ -1,13 +1,8 @@
 apiVersion: policy.karmada.io/v1alpha1
-kind: PropagationPolicy
+kind: ClusterPropagationPolicy
 metadata:
-  name: default-pp
+  name: default-cpp
 spec:
-  propagateDeps: true
-  resourceSelectors:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: nginx
   placement:
     clusterAffinity:
       clusterNames:
@@ -26,3 +21,6 @@ spec:
               clusterNames:
                 - member2
             weight: 1
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment

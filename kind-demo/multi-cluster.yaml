@@ -1,0 +1,40 @@
+# 一共三个节点，一个控制面，两个从节点
+# docker pull kindest/node:v1.25.3
+# kind create cluster --image kindest/node:v1.27.3 --name single -v 5
+# kind create cluster --image kindest/node:v1.27.3 --name multi --config multi-cluster.yaml -v 5
+# kind get clusters
+# kind delete cluster --name multi
+# 进入控制面：docker exec -it multi-control-plane bash
+# 查看镜像：docker exec -it multi-control-plane crictl images
+# 导入镜像：kind load docker-image ubuntu:1.0 --name multi
+# 令master节点也能调度：kubectl taint nodes --all node-role.kubernetes.io/master-; kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /opt/k8share
+        containerPath: /opt/host
+    extraPortMappings:
+      - containerPort: 5443
+        hostPort: 5443
+        protocol: TCP
+        listenAddress: 127.0.0.1
+  - role: worker
+    extraMounts:
+      - hostPath: /opt/k8share
+        containerPath: /opt/host
+    extraPortMappings:
+      - containerPort: 5443
+        hostPort: 5444
+        protocol: TCP
+        listenAddress: 127.0.0.1
+  - role: worker
+    extraMounts:
+      - hostPath: /opt/k8share
+        containerPath: /opt/host
+    extraPortMappings:
+      - containerPort: 5443
+        hostPort: 5445
+        protocol: TCP
+        listenAddress: 127.0.0.1

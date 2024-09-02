@@ -1,0 +1,28 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: ConfigMap
+      name: demo
+  placement:
+    clusterTolerations:
+      - effect: NoExecute
+        key: cluster.karmada.io/not-ready
+        operator: Exists
+        tolerationSeconds: 0
+      - effect: NoExecute
+        key: cluster.karmada.io/unreachable
+        operator: Exists
+        tolerationSeconds: 0
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        dynamicWeight: AvailableReplicas

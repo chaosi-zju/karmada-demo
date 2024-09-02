@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: presure-tool
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: presure-tool
+          image: alpine
+          args:
+            - -c
+            - apk add curl; while true; do for i in `seq 200`; do curl http://nginx-service:80; done; sleep 1; done
+          command:
+            - /bin/sh

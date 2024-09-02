@@ -1,0 +1,29 @@
+# kubectl taint nodes multi-worker foo=buzz:NoSchedule
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      terminationGracePeriodSeconds: 0
+      tolerations:
+        - key: "foo"
+          operator: "Equal"
+          value: "buzz"
+          effect: "NoSchedule"
+      containers:
+        - image: nginx
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          resources:
+            limits:
+              cpu: 25m
+              memory: 64Mi

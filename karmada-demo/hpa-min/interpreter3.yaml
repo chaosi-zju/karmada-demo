@@ -1,0 +1,44 @@
+apiVersion: config.karmada.io/v1alpha1
+kind: ResourceInterpreterCustomization
+metadata:
+  name: hpa-min-replica-split-ric
+spec:
+  target:
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+  customizations:
+    replicaResource:
+      luaScript: >
+        function GetReplicas(obj)
+          replica = obj.spec.minReplicas
+          return replica, nil
+        end
+    replicaRevision:
+      luaScript: >
+        function ReviseReplica(obj, desiredReplica)
+          obj.spec.minReplicas = desiredReplica
+          return obj
+        end
+---
+apiVersion: config.karmada.io/v1alpha1
+kind: ResourceInterpreterCustomization
+metadata:
+  name: deployment-dependency-hpa
+spec:
+  target:
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+  customizations:
+    dependencyInterpretation:
+      luaScript: >
+        function GetDependencies(desiredObj)
+          dependencies = {}
+          dependency = {}
+          ref = desiredObj.spec.scaleTargetRef
+          dependency.apiVersion = ref.apiVersion
+          dependency.kind = ref.kind
+          dependency.name = ref.name
+          dependency.namespace = desiredObj.metadata.namespace
+          dependencies[1] = dependency
+          return dependencies
+        end

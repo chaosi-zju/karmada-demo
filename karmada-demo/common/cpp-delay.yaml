@@ -1,17 +1,16 @@
 apiVersion: policy.karmada.io/v1alpha1
-kind: PropagationPolicy
+kind: ClusterPropagationPolicy
 metadata:
-  name: pp
+  name: cpp-delay
 spec:
-  conflictResolution: Overwrite
+  activationPreference: Lazy
   resourceSelectors:
     - apiVersion: apps/v1
       kind: Deployment
+      namespace: default
       name: nginx
-    - apiVersion: rbac.authorization.k8s.io/v1
-      kind: Role
-      name: demo
   placement:
     clusterAffinity:
       clusterNames:
         - member1
+        - member2

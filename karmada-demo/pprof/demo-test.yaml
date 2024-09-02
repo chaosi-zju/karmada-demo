@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-test
+  namespace: demo-test-ns
+  labels:
+    app: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-test
+  template:
+    metadata:
+      labels:
+        app: demo-test
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - image: nginx
+          imagePullPolicy: IfNotPresent
+          name: demo-test
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+#      volumes:
+#        - name: secret-demo-test
+#          secret:
+#            secretName: demo-test
+#        - name: configmap-demo-test
+#          configMap:
+#            name: demo-test
+#---
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: demo-test
+#  namespace: demo-test-ns
+#  labels:
+#    app: test
+#type: Opaque
+#data:
+#  key: MTIzCg==
+#---
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: demo-test
+#  namespace: demo-test-ns
+#  labels:
+#    app: test
+#data:
+#  test-key: "test-value"
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: demo-test
+#  namespace: demo-test-ns
+#  labels:
+#    app: test
+#spec:
+#  ports:
+#    - port: 80
+#      targetPort: 8080
+#  selector:
+#    app: demo-test
+#---
+#apiVersion: multicluster.x-k8s.io/v1alpha1
+#kind: ServiceExport
+#metadata:
+#  name: demo-test
+#  namespace: demo-test-ns
+#  labels:
+#    app: test

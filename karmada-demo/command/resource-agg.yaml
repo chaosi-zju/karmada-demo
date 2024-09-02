@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deploy-1
+  labels:
+    app: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-deploy-1
+  template:
+    metadata:
+      labels:
+        app: demo-deploy-1
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - image: nginx
+          name: demo-deploy-1
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deploy-2
+  labels:
+    app: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-deploy-2
+  template:
+    metadata:
+      labels:
+        app: demo-deploy-2
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - image: nginx
+          name: demo-deploy-2
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: default-pp
+spec:
+  propagateDeps: true
+  conflictResolution: Overwrite
+  placement:
+    clusterTolerations:
+      - effect: NoExecute
+        key: cluster.karmada.io/not-ready
+        operator: Exists
+        tolerationSeconds: 0
+      - effect: NoExecute
+        key: cluster.karmada.io/unreachable
+        operator: Exists
+        tolerationSeconds: 0
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaSchedulingType: Divided
+      replicaDivisionPreference: Aggregated
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: demo-deploy-1
+      namespace: default
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  propagateDeps: true
+  conflictResolution: Overwrite
+  placement:
+    clusterTolerations:
+      - effect: NoExecute
+        key: cluster.karmada.io/not-ready
+        operator: Exists
+        tolerationSeconds: 0
+      - effect: NoExecute
+        key: cluster.karmada.io/unreachable
+        operator: Exists
+        tolerationSeconds: 0
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaSchedulingType: Divided
+      replicaDivisionPreference: Aggregated
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: demo-deploy-2
+      namespace: default

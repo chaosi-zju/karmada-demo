@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: example-pm
+  namespace: karmada-system
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      app: karmada-controller-manager
+  podMetricsEndpoints:
+    - port: metrics
+---

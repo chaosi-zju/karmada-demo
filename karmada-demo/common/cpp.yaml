@@ -1,0 +1,50 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  propagateDeps: true
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+    - apiVersion: v1
+      kind: ConfigMap
+      name: demo
+    - apiVersion: v1
+      kind: Secret
+      name: ucs-user-token
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: ucs-user-role
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: ucs-user-role-binding
+  placement:
+    clusterTolerations:
+      - effect: NoExecute
+        key: workload-rebalancer-test
+        operator: Exists
+      - effect: NoExecute
+        key: cluster.karmada.io/not-ready
+        operator: Exists
+      - effect: NoExecute
+        key: cluster.karmada.io/unreachable
+        operator: Exists
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - member1
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member2
+            weight: 1

@@ -1,0 +1,10 @@
+apiVersion: apps.karmada.io/v1alpha1
+kind: WorkloadRebalancer
+metadata:
+  name: demo
+spec:
+  workloads:
+    - apiVersion: v1
+      kind: ConfigMap
+      name: demo
+      namespace: default

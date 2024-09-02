@@ -1,7 +1,40 @@
-apiVersion: policy.karmada.io/v1alpha1
-kind: PropagationPolicy
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: default-pp
+  name: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          resources:
+            limits:
+              cpu: 25m
+              memory: 64Mi
+      volumes:
+        - name: configmap
+          configMap:
+            name: nginx-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  mykey: "mydata"
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
 spec:
   propagateDeps: true
   resourceSelectors:

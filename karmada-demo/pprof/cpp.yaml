@@ -1,0 +1,42 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+        - member3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - member1
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member3
+            weight: 1
+  resourceSelectors:
+  - apiVersion: apps/v1
+    kind: Deployment
+  - apiVersion: v1
+    kind: Service
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: serviceexports.multicluster.x-k8s.io
+  - apiVersion: multicluster.x-k8s.io/v1alpha1
+    kind: ServiceExport
+  - apiVersion: v1
+    kind: ConfigMap
+  - apiVersion: v1
+    kind: Secret

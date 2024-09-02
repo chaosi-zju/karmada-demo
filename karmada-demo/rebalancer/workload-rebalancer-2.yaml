@@ -1,0 +1,11 @@
+apiVersion: apps.karmada.io/v1alpha1
+kind: WorkloadRebalancer
+metadata:
+  name: demo
+spec:
+  ttlSecondsAfterFinished: 600
+  workloads:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: demo-deploy-1
+      namespace: default

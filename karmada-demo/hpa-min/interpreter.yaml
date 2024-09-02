@@ -1,0 +1,47 @@
+apiVersion: config.karmada.io/v1alpha1
+kind: ResourceInterpreterCustomization
+metadata:
+  name: hpa-min-replica-split-ric
+spec:
+  target:
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+  customizations:
+    replicaResource:
+      luaScript: >
+        function GetReplicas(obj)
+          clusterNum = 2
+          replica = obj.spec.minReplicas
+          if ( obj.spec.minReplicas == 1 )
+          then
+             replica = clusterNum
+          end
+          return replica, nil
+        end
+    replicaRevision:
+      luaScript: >
+        function ReviseReplica(obj, desiredReplica)
+          obj.spec.minReplicas = desiredReplica
+          return obj
+        end
+
+
+#$ ka delete -f hpa.yaml;sleep 1;ka apply -f hpa.yaml;sleep 1;karmadactl --karmada-context karmada-apiserver get deploy nginx;karmadactl --karmada-context karmada-apiserver get hpa nginx
+#deployment.apps "nginx" deleted
+#horizontalpodautoscaler.autoscaling "nginx" deleted
+#propagationpolicy.policy.karmada.io "nginx-propagation" deleted
+#
+#deployment.apps/nginx created
+#horizontalpodautoscaler.autoscaling/nginx created
+#propagationpolicy.policy.karmada.io/nginx-propagation created
+#
+#NAME    CLUSTER   READY   UP-TO-DATE   AVAILABLE   AGE   ADOPTION
+#nginx   member1   0/1     1            0           1s    Y
+#nginx   member2   0/1     1            0           1s    Y
+#cluster(member2): deployments.apps "nginx" not found
+#cluster(member3): deployments.apps "nginx" not found
+#
+#NAME    CLUSTER   REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE   ADOPTION
+#nginx   member2   Deployment/nginx   <unknown>/10%   1         4         0          1s    Y
+#cluster(member1): horizontalpodautoscalers.autoscaling "nginx" not found
+#cluster(member3): horizontalpodautoscalers.autoscaling "nginx" not found

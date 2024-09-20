@@ -21,17 +21,12 @@ spec:
       kind: ClusterRoleBinding
       name: ucs-user-role-binding
   placement:
-#    clusterTolerations:
-#      - effect: NoExecute
-#        key: workload-rebalancer-test
-#        operator: Exists
-#      - effect: NoExecute
-#        key: cluster.karmada.io/not-ready
-#        operator: Exists
-#      - effect: NoExecute
-#        key: cluster.karmada.io/unreachable
-#        operator: Exists
-    clusterAffinity:
+    clusterAffinities:
+    - affinityName: primary-clusters
+      clusterNames:
+        - member1
+        - member2
+    - affinityName: backup-clusters
       clusterNames:
         - member1
         - member2
@@ -49,4 +44,8 @@ spec:
 #          - targetCluster:
 #              clusterNames:
 #                - member2
+#            weight: 1
+#          - targetCluster:
+#              clusterNames:
+#                - member3
 #            weight: 1

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 6
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -19,3 +19,16 @@ spec:
             limits:
               cpu: 25m
               memory: 64Mi
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+  placement:
+    replicaScheduling:
+      replicaSchedulingType: Duplicated

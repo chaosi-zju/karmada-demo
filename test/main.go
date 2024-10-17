@@ -5,13 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"runtime/debug"
+	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func main1() {
-	fmt.Println(test())
+func main() {
+	go testPanic()
+	time.Sleep(time.Minute)
+	fmt.Println("ok")
 }
 
 func test() (status *runtime.RawExtension) {
@@ -26,4 +29,21 @@ func test() (status *runtime.RawExtension) {
 	fmt.Printf("%+v\n", status)
 	debug.Stack()
 	return
+}
+
+func testPanic() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered. Error:\n", r)
+		}
+	}()
+	for {
+		time.Sleep(time.Second)
+		mayPanic()
+		fmt.Println("error")
+	}
+}
+
+func mayPanic() {
+	panic("a problem")
 }

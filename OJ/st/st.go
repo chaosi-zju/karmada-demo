@@ -15,10 +15,13 @@ func main() {
 	addHolding(-2, 1.528)
 	addHolding(2, 1.513)
 	addHolding(1, 1.501)
+	addHolding(-3, 1.522)
+	addHolding(-3, 1.540)
 
+	printEarningWhenPrice(1.527)
 	printEarningWhenPrice(1.530)
-	printEarningWhenPrice(1.542)
-	printEarningWhenPrice(1.550)
+	printEarningWhenPrice(1.540)
+	printEarningWhenPrice(1.552)
 	printEarningWhenPrice(1.572)
 }
 

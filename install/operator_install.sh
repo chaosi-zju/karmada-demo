@@ -17,7 +17,7 @@ make image-karmada-operator GOOS="linux" --directory=.
 kind load docker-image docker.io/karmada/karmada-operator:latest --name karmada-operator-host
 
 # 安装operator
-helm upgrade -i karmada-operator -n karmada-system  --create-namespace --dependency-update ./charts/karmada-operator --debug
+helm upgrade -i karmada-operator -n karmada-system --create-namespace --dependency-update ./charts/karmada-operator --debug
 
 # 安装Karmada
 kubectl apply -f operator/config/crds/
@@ -27,6 +27,7 @@ sed -i'' -e "s/namespace: test/namespace: karmada-system/g" operator/config/samp
 sed -i'' -e "s/imageTag: v1.8.0/imageTag: latest/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/replicas: 2/replicas: 1/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/    # /    /g" operator/config/samples/karmada.yaml
+sed -i'' -e "s/imageTag: latest/imageTag: v1.11.0/g" operator/config/samples/karmada.yaml
 kubectl apply -f operator/config/samples/karmada.yaml
 
 kubectl get secret -n karmada-system karmada-kubeconfig -o jsonpath={.data.kubeconfig} | base64 -d > ~/.kube/karmada-operator-apiserver.config

@@ -31,6 +31,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="karmada-wule">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
   </component>
 </project>

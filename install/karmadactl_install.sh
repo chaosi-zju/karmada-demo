@@ -11,7 +11,7 @@ CLUSTER=karmada-karmadactl-host hack/pullimg.sh
 # install
 export LDFLAGS="-X github.com/karmada-io/karmada/pkg/version.gitVersion=v1.11.0"
 make karmadactl
-export PATH=_output/bin/linux/amd64/:${PATH}
+export PATH=/root/home/gopath/src/github.com/chaosi-zju/karmada/_output/bin/linux/amd64/:${PATH}
 
 karmadactl init
 

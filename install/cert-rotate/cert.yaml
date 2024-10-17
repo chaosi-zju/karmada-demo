@@ -1,0 +1,204 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: root-ca-issuer
+  namespace: karmada-system
+spec:
+  selfSigned: {}
+
+---
+# ca-key-pair
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: root-ca
+  namespace: karmada-system
+spec:
+  isCA: true
+  commonName: karmada
+  secretName: ca-key-pair
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: root-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 87600h
+  renewBefore: 10h
+
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ca-issuer
+  namespace: karmada-system
+spec:
+  ca:
+    secretName: root-ca-cert
+---
+# client-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-cert
+  namespace: karmada-system
+spec:
+  secretName: client-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: system:admin
+  subject:
+    organizations:
+      - system:masters
+  usages:
+    - client auth
+---
+# server-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: server-cert
+  namespace: karmada-system
+spec:
+  secretName: server-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: server
+  usages:
+    - signing
+    - key encipherment
+    - server auth
+  dnsNames:
+    - '*.karmada-system.svc.cluster.local'
+    - '*.karmada-system.svc'
+    - 'kubernetes.default.svc'
+    - 'localhost'
+    - '{{host_cluster_name}}'
+    - '{{apiserver_ip_from_kubeconfig}}'
+  ipAddresses:
+    - '127.0.0.1'
+    - '172.18.0.3'
+
+---
+# front-proxy-client-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: front-proxy-client-cert
+  namespace: karmada-system
+spec:
+  secretName: front-proxy-client-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: front-proxy-client
+  usages:
+    - signing
+    - key encipherment
+    - client auth
+---
+# etcd-client-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: etcd-client-cert
+  namespace: karmada-system
+spec:
+  secretName: etcd-client-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: etcd-client
+  usages:
+    - signing
+    - key encipherment
+    - client auth
+---
+# etcd-server-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: etcd-server-cert
+  namespace: karmada-system
+spec:
+  secretName: etcd-server-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: etcd-server
+  usages:
+    - signing
+    - key encipherment
+    - server auth
+  dnsNames:
+    - '*.karmada-system.svc.cluster.local'
+    - '*.karmada-system.svc'
+    - 'localhost'
+    - '{{host_cluster_name}}'
+  ipAddresses:
+    - '127.0.0.1'
+---
+# webhook-server-cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: webhook-server-cert
+  namespace: karmada-system
+spec:
+  secretName: webhook-server-cert
+  privateKey:
+    algorithm: RSA
+    size: 3072
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+  duration: 43800h
+  renewBefore: 10h
+  commonName: webhook-server
+  usages:
+    - signing
+    - key encipherment
+    - server auth
+  dnsNames:
+    - '*.karmada-system.svc.cluster.local'
+    - '*.karmada-system.svc'
+    - 'localhost'
+    - '{{host_cluster_name}}'
+    - '{{interpreter_webhook_example_service_external_ip}}'
+  ipAddresses:
+    - '127.0.0.1'

@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: spark-operator
+    meta.helm.sh/release-namespace: karmada-system
+  creationTimestamp: "2024-10-17T11:29:42Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: spark-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: spark-operator
+    app.kubernetes.io/version: 2.0.2
+    helm.sh/chart: spark-operator-2.0.2
+  name: spark-operator-controller
+  namespace: karmada-system
+  resourceVersion: "141229"
+  uid: aa86e780-69db-49b0-9e7d-a1497f2acb38
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: spark-operator
+      app.kubernetes.io/name: spark-operator
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: spark-operator
+        app.kubernetes.io/name: spark-operator
+    spec:
+      containers:
+      - args:
+        - controller
+        - start
+        - --zap-log-level=info
+        - --namespaces=default
+        - --controller-threads=10
+        - --enable-ui-service=true
+        - --enable-metrics=true
+        - --metrics-bind-address=:8080
+        - --metrics-endpoint=/metrics
+        - --metrics-prefix=
+        - --metrics-labels=app_type
+        - --leader-election=true
+        - --leader-election-lock-name=spark-operator-controller-lock
+        - --leader-election-lock-namespace=karmada-system
+        - --workqueue-ratelimiter-bucket-qps=50
+        - --workqueue-ratelimiter-bucket-size=500
+        - --workqueue-ratelimiter-max-delay=6h
+        - --kubeconfig=/etc/karmada/config/karmada.config
+        image: docker.io/kubeflow/spark-operator:2.0.2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8081
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: spark-operator-controller
+        ports:
+        - containerPort: 8080
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: 8081
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - name: karmada-config
+            mountPath: /etc/karmada/config
+      volumes:
+        - name: karmada-config
+          secret:
+            secretName: karmada-controller-manager-config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: spark-operator-controller
+      serviceAccountName: spark-operator-controller
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2024-10-17T11:29:44Z"
+    lastUpdateTime: "2024-10-17T11:29:44Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2024-10-17T11:29:43Z"
+    lastUpdateTime: "2024-10-17T11:29:44Z"
+    message: ReplicaSet "spark-operator-controller-57fcc56456" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

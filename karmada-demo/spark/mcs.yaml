@@ -1,0 +1,11 @@
+apiVersion: networking.karmada.io/v1alpha1
+kind: MultiClusterService
+metadata:
+  name: spark-test-driver-svc
+spec:
+  types:
+    - CrossCluster
+  providerClusters:
+    - name: member1
+  consumerClusters:
+    - name: member2

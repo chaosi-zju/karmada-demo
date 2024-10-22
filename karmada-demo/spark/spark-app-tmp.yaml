@@ -8,14 +8,32 @@ spec:
   mode: cluster
   image: "ghcr.io/apache/spark-docker/spark:3.5.2"
   imagePullPolicy: IfNotPresent
+  imagePullSecrets:
+    - "harbor-secret"
   mainClass: org.apache.spark.examples.SparkPi
   mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.2.jar"
-  sparkVersion: "3.5.2"
+  sparkVersion: "3.1.1"
+  #hadoopConfigMap: hadoop-conf
   sparkConf:
+    #spark.eventLog.enabled: false
+    #    spark.master: "k8s://https://172.18.0.3:5443"
     spark.rss.storage.type: MEMORY_LOCALFILE
     spark.executor.extraJavaOptions: "-DlogTarget=Console -DbootstrapServers=127.0.0.1:9092"
     spark.driver.extraJavaOptions: "-DlogTarget=Console -DbootstrapServers=127.0.0.1:9092"
-    spark.log.level: "DEBUG"
+  #    spark.kubernetes.authenticate.driver.serviceAccountName: spark
+  #    spark.kubernetes.authenticate.submission.caCertFile: "/etc/spark/certs/ca.crt"
+  #    spark.kubernetes.authenticate.submission.clientCertFile: "/etc/spark/certs/tls.crt"
+  #    spark.kubernetes.authenticate.submission.clientKeyFile: "/etc/spark/certs/tls.key"
+  #    spark.kubernetes.authenticate.caCertFile: "/etc/spark/certs/ca.crt"
+  #    spark.kubernetes.authenticate.clientCertFile: "/etc/spark/certs/tls.crt"
+  #    spark.kubernetes.authenticate.clientKeyFile: "/etc/spark/certs/tls.key"
+  #    spark.kubernetes.driver.master: "k8s://https://172.18.0.3:5443"
+  #    spark.kubernetes.authenticate.driver.caCertFile: "/etc/spark/certs/ca.crt"
+  #    spark.kubernetes.authenticate.driver.clientKeyFile: "/etc/spark/certs/tls.key"
+  #    spark.kubernetes.authenticate.driver.clientCertFile: "/etc/spark/certs/tls.crt"
+  #    spark.kubernetes.authenticate.driver.mounted.caCertFile: "/etc/spark/certs/ca.crt"
+  #    spark.kubernetes.authenticate.driver.mounted.clientCertFile: "/etc/spark/certs/tls.crt"
+  #    spark.kubernetes.authenticate.driver.mounted.clientKeyFile: "/etc/spark/certs/tls.key"
   restartPolicy:
     type: Never
   volumes:
@@ -33,9 +51,7 @@ spec:
     coreLimit: "1200m"
     memory: "512m"
     labels:
-      version: 3.5.2
-    serviceLabels:
-      spark-app-name: spark-test
+      version: 3.1.1
     secrets:
       - name: spark-opaque-secret
         path: /var/run/secrets/kubernetes.io/serviceaccount
@@ -46,12 +62,12 @@ spec:
         value: "172.18.0.4"
       - name: KUBERNETES_SERVICE_PORT
         value: "5443"
-    coreRequest: "500m"
-    coreLimit: "500m"
+    coreRequest: "1m"
+    coreLimit: "50m"
     instances: 3
     memory: "500m"
     labels:
-      version: 3.5.2
+      version: 3.1.1
     secrets:
       - name: spark-opaque-secret
         path: /var/run/secrets/kubernetes.io/serviceaccount

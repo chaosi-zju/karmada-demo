@@ -6,12 +6,12 @@ hack/create-cluster.sh karmada-karmadactl-host ~/.kube/karmada-karmadactl-host.c
 sed -i 's/karmada-karmadactl-host/karmada-host/g' ~/.kube/karmada-karmadactl-host.config
 
 export KUBECONFIG=~/.kube/karmada-karmadactl-host.config
-CLUSTER=karmada-karmadactl-host hack/pullimg.sh
+CLUSTER=karmada-karmadactl-host VERSION=v1.11.0 hack/pullimg.sh
 
 # install
 export LDFLAGS="-X github.com/karmada-io/karmada/pkg/version.gitVersion=v1.11.0"
 make karmadactl
-export PATH=/root/home/gopath/src/github.com/chaosi-zju/karmada/_output/bin/linux/amd64/:${PATH}
+export PATH=/root/home/gopath/src/github.com/chaosi-zju/karmada/_output/bin/linux/amd64:${PATH}
 
 karmadactl init
 
@@ -20,3 +20,8 @@ karmadactl join member4 --kubeconfig /etc/karmada/karmada-apiserver.config --kar
 
 karmadactl addons enable karmada-search karmada-descheduler karmada-metrics-adapter
 karmadactl addons enable karmada-scheduler-estimator -C member4 --member-kubeconfig ~/.kube/member4.config --member-context member4
+
+
+# uninstall
+
+karmadactl addons disable karmada-search karmada-descheduler karmada-metrics-adapter

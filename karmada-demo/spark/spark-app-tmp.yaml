@@ -42,10 +42,10 @@ spec:
         path: "/tmp"
         type: Directory
   driver:
-    kubernetesMaster: https://172.18.0.4:5443
+    kubernetesMaster: https://172.18.0.3:5443
     env:
       - name: KUBERNETES_SERVICE_HOST
-        value: "172.18.0.4"
+        value: "172.18.0.3"
       - name: KUBERNETES_SERVICE_PORT
         value: "5443"
     coreLimit: "1200m"
@@ -59,7 +59,7 @@ spec:
   executor:
     env:
       - name: KUBERNETES_SERVICE_HOST
-        value: "172.18.0.4"
+        value: "172.18.0.3"
       - name: KUBERNETES_SERVICE_PORT
         value: "5443"
     coreRequest: "1m"

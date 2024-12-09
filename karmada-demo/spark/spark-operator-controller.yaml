@@ -5,7 +5,7 @@ metadata:
     deployment.kubernetes.io/revision: "1"
     meta.helm.sh/release-name: spark-operator
     meta.helm.sh/release-namespace: karmada-system
-  creationTimestamp: "2024-10-17T11:29:42Z"
+  creationTimestamp: "2024-10-30T07:23:40Z"
   generation: 1
   labels:
     app.kubernetes.io/component: controller
@@ -16,8 +16,8 @@ metadata:
     helm.sh/chart: spark-operator-2.0.2
   name: spark-operator-controller
   namespace: karmada-system
-  resourceVersion: "141229"
-  uid: aa86e780-69db-49b0-9e7d-a1497f2acb38
+  resourceVersion: "214784"
+  uid: 19b367a8-49dd-47b5-95c8-eed2f5bf7a6c
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -48,7 +48,7 @@ spec:
       - args:
         - controller
         - start
-        - --zap-log-level=info
+        - --zap-log-level=debug
         - --namespaces=default
         - --controller-threads=10
         - --enable-ui-service=true
@@ -63,7 +63,11 @@ spec:
         - --workqueue-ratelimiter-bucket-qps=50
         - --workqueue-ratelimiter-bucket-size=500
         - --workqueue-ratelimiter-max-delay=6h
-        - --kubeconfig=/etc/karmada/config/karmada.config
+        env:
+        - name: KUBERNETES_SERVICE_HOST
+          value: 172.18.0.3
+        - name: KUBERNETES_SERVICE_PORT
+          value: "5443"
         image: docker.io/kubeflow/spark-operator:2.0.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -93,31 +97,32 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-          - name: karmada-config
-            mountPath: /etc/karmada/config
-      volumes:
-        - name: karmada-config
-          secret:
-            secretName: karmada-controller-manager-config
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: spark-opaque-secret
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccount: spark-operator-controller
-      serviceAccountName: spark-operator-controller
+      serviceAccount: default
+      serviceAccountName: default
       terminationGracePeriodSeconds: 30
+      volumes:
+      - name: spark-opaque-secret
+        secret:
+          defaultMode: 420
+          secretName: spark-opaque-secret
 status:
   availableReplicas: 1
   conditions:
-  - lastTransitionTime: "2024-10-17T11:29:44Z"
-    lastUpdateTime: "2024-10-17T11:29:44Z"
+  - lastTransitionTime: "2024-10-30T07:23:43Z"
+    lastUpdateTime: "2024-10-30T07:23:43Z"
     message: Deployment has minimum availability.
     reason: MinimumReplicasAvailable
     status: "True"
     type: Available
-  - lastTransitionTime: "2024-10-17T11:29:43Z"
-    lastUpdateTime: "2024-10-17T11:29:44Z"
-    message: ReplicaSet "spark-operator-controller-57fcc56456" has successfully progressed.
+  - lastTransitionTime: "2024-10-30T07:23:40Z"
+    lastUpdateTime: "2024-10-30T07:23:43Z"
+    message: ReplicaSet "spark-operator-controller-68886b5855" has successfully progressed.
     reason: NewReplicaSetAvailable
     status: "True"
     type: Progressing

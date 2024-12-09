@@ -12,6 +12,9 @@ helm install karmada charts/karmada --namespace karmada-system --set apiServer.h
 
 # ct install karmada --namespace "karmada-system" --debug --helm-extra-args "--timeout 800s" --skip-clean-up --target-branch "helm-0627"
 
+
+ct install karmada --namespace "karmada-system" --helm-extra-args "--timeout 800s" --helm-extra-set-args "--set=apiServer.hostNetwork=true,components={'metricsAdapter,search,descheduler'}"
+
 id=""
 kubectl get secret -n karmada-system karmada${id}-kubeconfig -o jsonpath={.data.kubeconfig} | base64 -d > ~/.kube/karmada-helm-apiserver.config
 sed -i'' -e "s/karmada${id}/karmada/g" ~/.kube/karmada-helm-apiserver.config

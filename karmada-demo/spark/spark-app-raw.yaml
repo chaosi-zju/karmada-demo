@@ -11,7 +11,6 @@ spec:
   mainClass: org.apache.spark.examples.SparkPi
   mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.2.jar"
   sparkVersion: "3.5.2"
-  #hadoopConfigMap: hadoop-conf
   sparkConf:
     #spark.eventLog.enabled: false
     #spark.master: "k8s://https://10.207.8.147:31000"

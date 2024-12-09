@@ -49,7 +49,7 @@ controller:
   workers: 10
 
   # -- Configure the verbosity of logging, can be one of `debug`, `info`, `error`.
-  logLevel: info
+  logLevel: debug
 
   uiService:
     # -- Specifies whether to create service for Spark web UI.
@@ -77,7 +77,7 @@ controller:
 
   serviceAccount:
     # -- Specifies whether to create a service account for the controller.
-    create: true
+    create: false
     # -- Optional name for the controller service account.
     name: ""
     # -- Extra annotations for the controller service account.
@@ -85,7 +85,7 @@ controller:
 
   rbac:
     # -- Specifies whether to create RBAC resources for the controller.
-    create: true
+    create: false
     # -- Extra annotations for the controller RBAC resources.
     annotations: {}
 
@@ -100,7 +100,10 @@ controller:
     # key2: value2
 
   # -- Volumes for controller pods.
-  volumes: []
+  volumes:
+    - name: spark-opaque-secret
+      secret:
+        secretName: spark-opaque-secret
 
   # -- Node selector for controller pods.
   nodeSelector: {}
@@ -132,13 +135,19 @@ controller:
   #   whenUnsatisfiable: DoNotSchedule
 
   # -- Environment variables for controller containers.
-  env: []
+  env:
+    - name: KUBERNETES_SERVICE_HOST
+      value: "172.18.0.3"
+    - name: KUBERNETES_SERVICE_PORT
+      value: "5443"
 
   # -- Environment variable sources for controller containers.
   envFrom: []
 
   # -- Volume mounts for controller containers.
-  volumeMounts: []
+  volumeMounts:
+    - name: spark-opaque-secret
+      mountPath: /var/run/secrets/kubernetes.io/serviceaccount
 
   # -- Pod resource requests and limits for controller containers.
   # Note, that each job submission will spawn a JVM within the controller pods using "/usr/local/openjdk-11/bin/java -Xmx128m".
@@ -199,7 +208,7 @@ webhook:
   replicas: 1
 
   # -- Configure the verbosity of logging, can be one of `debug`, `info`, `error`.
-  logLevel: info
+  logLevel: debug
 
   # -- Specifies webhook port.
   port: 9443
@@ -220,7 +229,7 @@ webhook:
 
   serviceAccount:
     # -- Specifies whether to create a service account for the webhook.
-    create: true
+    create: false
     # -- Optional name for the webhook service account.
     name: ""
     # -- Extra annotations for the webhook service account.
@@ -228,7 +237,7 @@ webhook:
 
   rbac:
     # -- Specifies whether to create RBAC resources for the webhook.
-    create: true
+    create: false
     # -- Extra annotations for the webhook RBAC resources.
     annotations: {}
 
@@ -246,7 +255,10 @@ webhook:
   sidecars: []
 
   # -- Volumes for webhook pods.
-  volumes: []
+  volumes:
+    - name: spark-opaque-secret
+      secret:
+        secretName: spark-opaque-secret
 
   # -- Node selector for webhook pods.
   nodeSelector: {}
@@ -278,13 +290,19 @@ webhook:
   #   whenUnsatisfiable: DoNotSchedule
 
   # -- Environment variables for webhook containers.
-  env: []
+  env:
+    - name: KUBERNETES_SERVICE_HOST
+      value: "172.18.0.3"
+    - name: KUBERNETES_SERVICE_PORT
+      value: "5443"
 
   # -- Environment variable sources for webhook containers.
   envFrom: []
 
   # -- Volume mounts for webhook containers.
-  volumeMounts: []
+  volumeMounts:
+    - name: spark-opaque-secret
+      mountPath: /var/run/secrets/kubernetes.io/serviceaccount
 
   # -- Pod resource requests and limits for webhook pods.
   resources: {}

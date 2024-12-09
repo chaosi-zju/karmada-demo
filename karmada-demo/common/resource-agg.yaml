@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+  labels:
+    app: demo
+spec:
+  replicas: 120
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - image: nginx:latest
+          name: demo
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: default-cpp
+spec:
+  propagateDeps: true
+  conflictResolution: Overwrite
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+        - member3
+    replicaScheduling:
+      replicaSchedulingType: Divided
+      replicaDivisionPreference: Aggregated
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: demo
+      namespace: default
+  suspension:
+    dispatching: true
+---

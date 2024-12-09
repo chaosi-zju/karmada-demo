@@ -24,13 +24,13 @@ kubectl apply -f operator/config/crds/
 
 sed -i'' -e "s/karmada-demo/karmada/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/namespace: test/namespace: karmada-system/g" operator/config/samples/karmada.yaml
-sed -i'' -e "s/imageTag: v1.8.0/imageTag: latest/g" operator/config/samples/karmada.yaml
+sed -i'' -e "s/imageTag: v1.11.1/imageTag: latest/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/replicas: 2/replicas: 1/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/    # /    /g" operator/config/samples/karmada.yaml
-sed -i'' -e "s/imageTag: latest/imageTag: v1.11.0/g" operator/config/samples/karmada.yaml
 kubectl apply -f operator/config/samples/karmada.yaml
 
-kubectl get secret -n karmada-system karmada-kubeconfig -o jsonpath={.data.kubeconfig} | base64 -d > ~/.kube/karmada-operator-apiserver.config
+kubectl get secret -n karmada-system karmada-admin-config -o jsonpath={.data.kubeconfig} | base64 -d > ~/.kube/karmada-operator-apiserver.config
+sed -i'' -e "s/karmada-admin@karmada-apiserver/karmada-apiserver/g" ~/.kube/karmada-operator-apiserver.config
 
 # 添加成员集群
 hack/create-cluster.sh member5 ~/.kube/member5.config
@@ -40,3 +40,7 @@ karmadactl addons enable karmada-scheduler-estimator -C member5 --member-kubecon
 # 卸载
 karmadactl unjoin member5 --kubeconfig ~/.kube/karmada-operator-apiserver.config --karmada-context karmada-apiserver --cluster-kubeconfig ~/.kube/member5.config --cluster-context member5
 kubectl delete -f operator/config/samples/karmada.yaml
+
+sed -i'' -e "s/serviceType: .*/serviceType: LoadBalancer/g" operator/config/samples/karmada.yaml
+sed -i'' -e "s/serviceType: .*/serviceType: NodePort/g" operator/config/samples/karmada.yaml
+sed -i'' -e "s/serviceType: .*/serviceType: ClusterIP/g" operator/config/samples/karmada.yaml

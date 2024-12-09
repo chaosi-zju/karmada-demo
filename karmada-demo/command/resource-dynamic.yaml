@@ -98,8 +98,8 @@ spec:
         - member1
         - member2
     replicaScheduling:
-      replicaDivisionPreference: Weighted
       replicaSchedulingType: Divided
+      replicaDivisionPreference: Weighted
       weightPreference:
         dynamicWeight: AvailableReplicas
   resourceSelectors:

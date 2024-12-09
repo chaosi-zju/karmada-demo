@@ -11,10 +11,24 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
+type A struct {
+	Name string `json:"name"`
+}
+
 func main() {
-	go testPanic()
-	time.Sleep(time.Minute)
-	fmt.Println("ok")
+	obj := &appsv1.Deployment{}
+	fmt.Println(getKind(obj))
+
+	//go testPanic()
+	//time.Sleep(time.Minute)
+	//fmt.Println("ok")
+}
+
+func getKind(obj *appsv1.Deployment) string {
+	if obj.Kind != "" {
+		return obj.Kind
+	}
+	return ""
 }
 
 func test() (status *runtime.RawExtension) {

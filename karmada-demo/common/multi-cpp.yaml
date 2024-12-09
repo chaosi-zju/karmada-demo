@@ -22,30 +22,29 @@ spec:
       name: ucs-user-role-binding
   placement:
     clusterAffinities:
-    - affinityName: primary-clusters
-      clusterNames:
-        - member1
-        - member2
-    - affinityName: backup-clusters
-      clusterNames:
-        - member1
-        - member2
-        - member3
+      - affinityName: primary-clusters
+        clusterNames:
+          - member4
+      - affinityName: backup-clusters
+        clusterNames:
+          - member1
+          - member2
+          - member3
     replicaScheduling:
       replicaDivisionPreference: Weighted
       replicaSchedulingType: Divided
       weightPreference:
-        dynamicWeight: AvailableReplicas
-#        staticWeightList:
-#          - targetCluster:
-#              clusterNames:
-#                - member1
-#            weight: 1
-#          - targetCluster:
-#              clusterNames:
-#                - member2
-#            weight: 1
-#          - targetCluster:
-#              clusterNames:
-#                - member3
-#            weight: 1
+        #        dynamicWeight: AvailableReplicas
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - member1
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - member3
+            weight: 1

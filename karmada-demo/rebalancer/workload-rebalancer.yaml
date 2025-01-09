@@ -3,7 +3,7 @@ kind: WorkloadRebalancer
 metadata:
   name: demo
 spec:
-  ttlSecondsAfterFinished: 10
+  ttlSecondsAfterFinished: 5
   workloads:
     - apiVersion: apps/v1
       kind: Deployment

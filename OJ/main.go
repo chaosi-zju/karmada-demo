@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type TreeNode struct {
 	Val   int
@@ -44,4 +47,20 @@ func isSubStructure(A *TreeNode, B *TreeNode) bool {
 		return subTree(a.Left, b.Left) && subTree(a.Right, b.Right)
 	}
 	return subTree(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
+}
+
+func PrintTimeCost() func(){
+	t:=time.Now()
+	return func() {
+		fmt.Println(time.Since(t))
+	}
+}
+
+
+func DoSomething() {
+	defer PrintTimeCost()()
+	defer func() func() {
+		t := time.Now()
+		return func() { fmt.Println(time.Since(t)) }
+	}()
 }

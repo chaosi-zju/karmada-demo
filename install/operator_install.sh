@@ -11,7 +11,7 @@ CLUSTER=karmada-operator-host hack/pullimg.sh
 # 准备operator镜像
 export VERSION="latest"
 export REGISTRY="docker.io/karmada"
-export LDFLAGS="-X github.com/karmada-io/karmada/pkg/version.gitVersion=v1.11.0"
+export LDFLAGS="-X github.com/karmada-io/karmada/pkg/version.gitVersion=v1.12.0"
 sed -i'' -e "s/RUN apk /#RUN apk /g" cluster/images/Dockerfile
 make image-karmada-operator GOOS="linux" --directory=.
 kind load docker-image docker.io/karmada/karmada-operator:latest --name karmada-operator-host
@@ -23,7 +23,7 @@ helm upgrade -i karmada-operator -n karmada-system --create-namespace --dependen
 kubectl apply -f operator/config/crds/
 
 sed -i'' -e "s/karmada-demo/karmada/g" operator/config/samples/karmada.yaml
-sed -i'' -e "s/namespace: test/namespace: karmada-system/g" operator/config/samples/karmada.yaml
+#sed -i'' -e "s/namespace: test/namespace: karmada-system/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/imageTag: v1.11.1/imageTag: latest/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/replicas: 2/replicas: 1/g" operator/config/samples/karmada.yaml
 sed -i'' -e "s/    # /    /g" operator/config/samples/karmada.yaml

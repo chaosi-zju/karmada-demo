@@ -1,0 +1,119 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    meta.helm.sh/release-name: spark-operator
+    meta.helm.sh/release-namespace: karmada-system
+  creationTimestamp: "2024-10-17T11:54:01Z"
+  generation: 2
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/instance: spark-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: spark-operator
+    app.kubernetes.io/version: 2.0.2
+    helm.sh/chart: spark-operator-2.0.2
+  name: spark-operator-webhook
+  resourceVersion: "144379"
+  uid: dc36e0c8-ca22-4730-b28f-4e4053fd69bd
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURvRENDQW9pZ0F3SUJBZ0lJVGNvUmNSL1R6UlF3RFFZSktvWklodmNOQVFFTEJRQXdVVEVYTUJVR0ExVUUKQ2hNT2MzQmhjbXN0YjNCbGNtRjBiM0l4TmpBMEJnTlZCQU1UTFhOd1lYSnJMVzl3WlhKaGRHOXlMWGRsWW1odgpiMnN0YzNaakxtdGhjbTFoWkdFdGMzbHpkR1Z0TG5OMll6QWVGdzB5TkRFd01UY3hNVEk1TkRSYUZ3MHpOREV3Ck1UVXhNVEk1TkRSYU1GRXhGekFWQmdOVkJBb1REbk53WVhKckxXOXdaWEpoZEc5eU1UWXdOQVlEVlFRREV5MXoKY0dGeWF5MXZjR1Z5WVhSdmNpMTNaV0pvYjI5ckxYTjJZeTVyWVhKdFlXUmhMWE41YzNSbGJTNXpkbU13Z2dFaQpNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM3OENuemNQcFNBUjVHKzUzSUp2MzZWNWk5CnBaRmtLNm1RMjZDOEpkYUFFYzg0T3JBQkFyWHdrektpdDMwYXNuRnB6QW91NXRrOEdmQU1XVHhuL1ljSGFoVW0KVFVsNUJGbVlYOXRKQXZuN3lvZHBSemxEbHlJYzk4QWJGR1lGZ0lsZThJOU1ZR083My9tVlRZSU9QdVNEekhHNgp2ZURTT3JzS2tjZDA3b2dzMnAzSzhrY1RIMFp5Wjlvc3VIbFFWeXlwQUFJdktqeWlXSjh1V05GcU1QcjQvOEVkCmVJK1NueThtV2ROd1BqMFJQMC81dDVaVHFpRURWQlVGVk1YY0locnJkS2FHVDJKZ0VHczREN2dvNjlmWm5tOFgKcmx5QWdhMGlwK2pCdHlXbml1ODZta0VZMDd0T3pKbU9jazJGMTlQM3NEaEJvYllQQlJDaGZ0bHNHalV4QWdNQgpBQUdqZkRCNk1BNEdBMVVkRHdFQi93UUVBd0lDcERBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXCkJCUU12blRMaUtlUk1oMndmZjJTMUhVcktlMmxtREE0QmdOVkhSRUVNVEF2Z2kxemNHRnlheTF2Y0dWeVlYUnYKY2kxM1pXSm9iMjlyTFhOMll5NXJZWEp0WVdSaExYTjVjM1JsYlM1emRtTXdEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUs3YmVFOGFCVzdtQnV4SDBVTTZKRzcyaVhoUFdNYjZJVWc4QVB0VitGd3QvWXdLQWprR05GMkZkQ3dICm9ySzdpQVRhRmtCVlNoZ0VZTDVqc09EalJ6allmN0kwVjNsQjRLQ3hzZ0pLWVZmMjVCb2IzMWMxTlB6NzFZRmUKL3Y5YjNicHZnazlhcUpncWh6dUdrdE8zZy9tUkdjditKV1oza2hYZGJJZkg3Z2F0STh4WW1sU0NKZFJwYTJGSApxUExnRGNoUWVVYm1qN2dDRnd4djUrZlJNZ2wxVTBIcUxCeisvd1BpU3JmR0cyNExxMnZnUmIvM3Rzbno1UjY5CitsTVNWd3F6OS9FYnpQbTZ3N3I1c0tRZEFkbmY0VTRjc29YdnVtbk9mL0l2Y3RpbklRdlZGVzNkcGVEZ0Y0THgKdENwdlRKYWZCR0tmN095eTR4TGZndHZaZkJ3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: spark-operator-webhook-svc
+      namespace: karmada-system
+      path: /mutate--v1-pod
+      port: 9443
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: mutate--v1-pod.sparkoperator.k8s.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: In
+      values:
+      - default
+  objectSelector:
+    matchLabels:
+      sparkoperator.k8s.io/launched-by-spark-operator: "true"
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+    scope: '*'
+  sideEffects: NoneOnDryRun
+  timeoutSeconds: 10
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURvRENDQW9pZ0F3SUJBZ0lJVGNvUmNSL1R6UlF3RFFZSktvWklodmNOQVFFTEJRQXdVVEVYTUJVR0ExVUUKQ2hNT2MzQmhjbXN0YjNCbGNtRjBiM0l4TmpBMEJnTlZCQU1UTFhOd1lYSnJMVzl3WlhKaGRHOXlMWGRsWW1odgpiMnN0YzNaakxtdGhjbTFoWkdFdGMzbHpkR1Z0TG5OMll6QWVGdzB5TkRFd01UY3hNVEk1TkRSYUZ3MHpOREV3Ck1UVXhNVEk1TkRSYU1GRXhGekFWQmdOVkJBb1REbk53WVhKckxXOXdaWEpoZEc5eU1UWXdOQVlEVlFRREV5MXoKY0dGeWF5MXZjR1Z5WVhSdmNpMTNaV0pvYjI5ckxYTjJZeTVyWVhKdFlXUmhMWE41YzNSbGJTNXpkbU13Z2dFaQpNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM3OENuemNQcFNBUjVHKzUzSUp2MzZWNWk5CnBaRmtLNm1RMjZDOEpkYUFFYzg0T3JBQkFyWHdrektpdDMwYXNuRnB6QW91NXRrOEdmQU1XVHhuL1ljSGFoVW0KVFVsNUJGbVlYOXRKQXZuN3lvZHBSemxEbHlJYzk4QWJGR1lGZ0lsZThJOU1ZR083My9tVlRZSU9QdVNEekhHNgp2ZURTT3JzS2tjZDA3b2dzMnAzSzhrY1RIMFp5Wjlvc3VIbFFWeXlwQUFJdktqeWlXSjh1V05GcU1QcjQvOEVkCmVJK1NueThtV2ROd1BqMFJQMC81dDVaVHFpRURWQlVGVk1YY0locnJkS2FHVDJKZ0VHczREN2dvNjlmWm5tOFgKcmx5QWdhMGlwK2pCdHlXbml1ODZta0VZMDd0T3pKbU9jazJGMTlQM3NEaEJvYllQQlJDaGZ0bHNHalV4QWdNQgpBQUdqZkRCNk1BNEdBMVVkRHdFQi93UUVBd0lDcERBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXCkJCUU12blRMaUtlUk1oMndmZjJTMUhVcktlMmxtREE0QmdOVkhSRUVNVEF2Z2kxemNHRnlheTF2Y0dWeVlYUnYKY2kxM1pXSm9iMjlyTFhOMll5NXJZWEp0WVdSaExYTjVjM1JsYlM1emRtTXdEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUs3YmVFOGFCVzdtQnV4SDBVTTZKRzcyaVhoUFdNYjZJVWc4QVB0VitGd3QvWXdLQWprR05GMkZkQ3dICm9ySzdpQVRhRmtCVlNoZ0VZTDVqc09EalJ6allmN0kwVjNsQjRLQ3hzZ0pLWVZmMjVCb2IzMWMxTlB6NzFZRmUKL3Y5YjNicHZnazlhcUpncWh6dUdrdE8zZy9tUkdjditKV1oza2hYZGJJZkg3Z2F0STh4WW1sU0NKZFJwYTJGSApxUExnRGNoUWVVYm1qN2dDRnd4djUrZlJNZ2wxVTBIcUxCeisvd1BpU3JmR0cyNExxMnZnUmIvM3Rzbno1UjY5CitsTVNWd3F6OS9FYnpQbTZ3N3I1c0tRZEFkbmY0VTRjc29YdnVtbk9mL0l2Y3RpbklRdlZGVzNkcGVEZ0Y0THgKdENwdlRKYWZCR0tmN095eTR4TGZndHZaZkJ3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: spark-operator-webhook-svc
+      namespace: karmada-system
+      path: /mutate-sparkoperator-k8s-io-v1beta2-sparkapplication
+      port: 9443
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: mutate-sparkoperator-k8s-io-v1beta2-sparkapplication.sparkoperator.k8s.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: In
+      values:
+      - default
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - sparkoperator.k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - sparkapplications
+    scope: '*'
+  sideEffects: NoneOnDryRun
+  timeoutSeconds: 10
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURvRENDQW9pZ0F3SUJBZ0lJVGNvUmNSL1R6UlF3RFFZSktvWklodmNOQVFFTEJRQXdVVEVYTUJVR0ExVUUKQ2hNT2MzQmhjbXN0YjNCbGNtRjBiM0l4TmpBMEJnTlZCQU1UTFhOd1lYSnJMVzl3WlhKaGRHOXlMWGRsWW1odgpiMnN0YzNaakxtdGhjbTFoWkdFdGMzbHpkR1Z0TG5OMll6QWVGdzB5TkRFd01UY3hNVEk1TkRSYUZ3MHpOREV3Ck1UVXhNVEk1TkRSYU1GRXhGekFWQmdOVkJBb1REbk53WVhKckxXOXdaWEpoZEc5eU1UWXdOQVlEVlFRREV5MXoKY0dGeWF5MXZjR1Z5WVhSdmNpMTNaV0pvYjI5ckxYTjJZeTVyWVhKdFlXUmhMWE41YzNSbGJTNXpkbU13Z2dFaQpNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM3OENuemNQcFNBUjVHKzUzSUp2MzZWNWk5CnBaRmtLNm1RMjZDOEpkYUFFYzg0T3JBQkFyWHdrektpdDMwYXNuRnB6QW91NXRrOEdmQU1XVHhuL1ljSGFoVW0KVFVsNUJGbVlYOXRKQXZuN3lvZHBSemxEbHlJYzk4QWJGR1lGZ0lsZThJOU1ZR083My9tVlRZSU9QdVNEekhHNgp2ZURTT3JzS2tjZDA3b2dzMnAzSzhrY1RIMFp5Wjlvc3VIbFFWeXlwQUFJdktqeWlXSjh1V05GcU1QcjQvOEVkCmVJK1NueThtV2ROd1BqMFJQMC81dDVaVHFpRURWQlVGVk1YY0locnJkS2FHVDJKZ0VHczREN2dvNjlmWm5tOFgKcmx5QWdhMGlwK2pCdHlXbml1ODZta0VZMDd0T3pKbU9jazJGMTlQM3NEaEJvYllQQlJDaGZ0bHNHalV4QWdNQgpBQUdqZkRCNk1BNEdBMVVkRHdFQi93UUVBd0lDcERBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXCkJCUU12blRMaUtlUk1oMndmZjJTMUhVcktlMmxtREE0QmdOVkhSRUVNVEF2Z2kxemNHRnlheTF2Y0dWeVlYUnYKY2kxM1pXSm9iMjlyTFhOMll5NXJZWEp0WVdSaExYTjVjM1JsYlM1emRtTXdEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUs3YmVFOGFCVzdtQnV4SDBVTTZKRzcyaVhoUFdNYjZJVWc4QVB0VitGd3QvWXdLQWprR05GMkZkQ3dICm9ySzdpQVRhRmtCVlNoZ0VZTDVqc09EalJ6allmN0kwVjNsQjRLQ3hzZ0pLWVZmMjVCb2IzMWMxTlB6NzFZRmUKL3Y5YjNicHZnazlhcUpncWh6dUdrdE8zZy9tUkdjditKV1oza2hYZGJJZkg3Z2F0STh4WW1sU0NKZFJwYTJGSApxUExnRGNoUWVVYm1qN2dDRnd4djUrZlJNZ2wxVTBIcUxCeisvd1BpU3JmR0cyNExxMnZnUmIvM3Rzbno1UjY5CitsTVNWd3F6OS9FYnpQbTZ3N3I1c0tRZEFkbmY0VTRjc29YdnVtbk9mL0l2Y3RpbklRdlZGVzNkcGVEZ0Y0THgKdENwdlRKYWZCR0tmN095eTR4TGZndHZaZkJ3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: spark-operator-webhook-svc
+      namespace: karmada-system
+      path: /mutate-sparkoperator-k8s-io-v1beta2-scheduledsparkapplication
+      port: 9443
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: mutate-sparkoperator-k8s-io-v1beta2-scheduledsparkapplication.sparkoperator.k8s.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: In
+      values:
+      - default
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - sparkoperator.k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - scheduledsparkapplications
+    scope: '*'
+  sideEffects: NoneOnDryRun
+  timeoutSeconds: 10

@@ -1,0 +1,47 @@
+name: Daily Submit
+on:
+  schedule:
+    # Run this workflow "At 9:00 UTC every day"
+    - cron: '0 2 * * *'
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  daily-submit:
+    name: daily submit
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: daily
+          fetch-depth: 0
+      - name: Run submit
+        run: |
+          git config user.name chaosi-zju
+          git config user.email "chaosi@zju.edu.cn"
+          
+          echo "$(TZ=UTC-8 date) daily submit" >> daily-submit.log
+          git add daily-submit.log
+          git commit -m "$(TZ=UTC-8 date) daily submit"
+          git push -f origin daily
+          
+          git clone https://github.com/chaosi-zju/karmada-deprecate.git
+          cd karmada-deprecate
+          git remote add source https://github.com/karmada-io/karmada.git
+          git fetch source
+          git rebase source/master
+      - name: Pushes to karmada-deprecate
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'karmada-deprecate'
+          destination-github-username: 'chaosi-zju'
+          destination-repository-name: 'karmada-deprecate'
+          user-email: chaosi@zju.edu.cn
+          target-branch: master

@@ -16,12 +16,16 @@ type A struct {
 }
 
 func main() {
-	obj := &appsv1.Deployment{}
-	fmt.Println(getKind(obj))
+	v1 := []int{1, 2, 3, 4, 5}
+	v2 := v1
+	v2 = f(v2)
+	fmt.Println(v1)
+	fmt.Println(v2)
+}
 
-	//go testPanic()
-	//time.Sleep(time.Minute)
-	//fmt.Println("ok")
+func f(v []int) []int {
+	v = append(v, 6)
+	return v
 }
 
 func getKind(obj *appsv1.Deployment) string {

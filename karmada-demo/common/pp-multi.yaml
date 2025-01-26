@@ -1,0 +1,25 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: default-pp
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+  placement:
+    clusterAffinities:
+      - affinityName: affinity1
+        clusterNames:
+          - member1
+      - affinityName: affinity2
+        clusterNames:
+          - member2
+      - affinityName: affinity3
+        clusterNames:
+          - member3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        dynamicWeight: AvailableReplicas

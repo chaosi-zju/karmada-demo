@@ -1,0 +1,24 @@
+# --client-ca-file verifies the cert of its client like kubelet and other controller
+# --cluster-signing-key-file is used for signing certificates
+# --root-ca-file is stored in service account type secret
+command:
+  - --client-ca-file=/etc/karmada/pki/ca/tls.crt
+  - --cluster-signing-cert-file=/etc/karmada/pki/ca/tls.crt
+  - --cluster-signing-key-file=/etc/karmada/pki/ca/tls.key
+  - --root-ca-file=/etc/karmada/pki/ca/tls.crt
+  - --service-account-private-key-file=/etc/karmada/pki/service-account-key-pair/sa.key
+volumeMounts:
+  - name: ca-cert
+    mountPath: /etc/karmada/pki/ca
+    readOnly: true
+  - name: service-account-key-pair
+    mountPath: /etc/karmada/pki/service-account-key-pair
+    readOnly: true
+volumes:
+  - name: ca-cert
+    secret:
+      secretName: kube-controller-manager-ca-cert
+  - name: service-account-key-pair
+    secret:
+      secretName: kube-controller-manager-service-account-key-pair
+---

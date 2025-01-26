@@ -1,0 +1,19 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: OverridePolicy
+metadata:
+  name: default-op
+spec:
+  overrideRules:
+    - overriders:
+        plaintext:
+          - operator: replace
+            path: /spec/template/spec/containers/0/resources/limits/memory
+            value: 80Mi
+      targetCluster:
+        clusterNames:
+          - member1
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+      namespace: default
